@@ -1,0 +1,28 @@
+###  Check tokenise endpoint returns a valid key
+POST http://0.0.0.0:8080/v1/tokenise
+Content-Type: application/json
+
+{
+  "Body": "999"
+}
+> {%
+client.test("Tokenise endpoint returned successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.contentType.mimeType === "text/plain", "Response header isn't plain text")
+  client.assert(response.contentType.charset === "UTF-8", "Charset isn't UTF-8")
+});
+%}
+###
+
+### Check health endpoint returns alive
+GET http://0.0.0.0:8080/health
+Content-Type: application/json
+
+> {%
+client.test("Request executed successfully", function() {
+client.assert(response.status === 200, "Response status is not 200");
+client.assert(response.contentType.mimeType === "application/json", "Response header isn't json")
+client.assert(response.body.alive === true, "Health endpoint doesn't value alive isn't true ")
+});
+%}
+###
